@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -12,18 +11,17 @@ import javax.persistence.OneToOne;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ChurchAccount extends Account {
-    @OneToOne(cascade = {CascadeType.ALL})
-    private Church church;
+public class AccountMember extends Account {
+    @OneToOne
+    private Member member;
 
-    public ChurchAccount(Integer accountNumber, Integer password, Church church) {
+    public AccountMember(Integer accountNumber, Integer password, Member member) {
         super(accountNumber, password);
-        this.church = church;
+        this.member = member;
     }
 
     @Override
     public String toString() {
         return super.toString();
     }
-
 }
