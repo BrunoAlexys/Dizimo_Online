@@ -23,7 +23,7 @@ public abstract class Account {
     private BigDecimal balance;
     private LocalDate accountOpeningDate;
 
-    public Account(Integer accountNumber, Integer password) {
+    protected Account(Integer accountNumber, Integer password) {
         this.accountNumber = accountNumber;
         this.password = password;
         this.balance = BigDecimal.ZERO;
