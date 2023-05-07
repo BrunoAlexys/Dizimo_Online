@@ -18,7 +18,6 @@ public class MemberAccountService implements IMemberAccountService, IBankTransit
     private final MemberAccountRepository memberAccountRepository;
     private AccountFinder accountFinder = new AccountFinder();
     private EntityManager manager = JPAUtil.getEntityManager();
-
     public MemberAccountService(MemberAccountRepository memberAccountRepository) {
         this.memberAccountRepository = memberAccountRepository;
     }
@@ -115,22 +114,27 @@ public class MemberAccountService implements IMemberAccountService, IBankTransit
 
     @Override
     public void transfer(Integer sourceAccountNumber, Integer destinationAccountNumber, Integer password, BigDecimal amount) throws SQLException {
-        AccountMember  foundAccountMember = accountFinder.fetchMemberAccount(sourceAccountNumber,password);
-        if (foundAccountMember != null){
+        AccountMember foundAccountMember = accountFinder.fetchMemberAccount(sourceAccountNumber, password);
+        if (foundAccountMember != null) {
             manager.getTransaction().begin();
             BigDecimal currentBalance = foundAccountMember.getBalance();
-            if (amount.compareTo(BigDecimal.ZERO) <= 0){
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new IllegalArgumentException("O valor da transferencia não pode ser 0");
             } else if (currentBalance.compareTo(amount) >= 0) {
                 BigDecimal newBalance = currentBalance.subtract(amount);
+                foundAccountMember.setBalance(newBalance);
                 manager.merge(foundAccountMember);
-                manager.getTransaction().commit();
-                ChurchAccount foundChurchAccount = accountFinder.searchChurchAccountByNumber(destinationAccountNumber);
-                if (foundChurchAccount != null){
-                    foundChurchAccount.setBalance(newBalance);
-                    manager.merge(foundChurchAccount);
-                    manager.getTransaction().commit();
+                try {
+                    ChurchAccount foundChurchAccount = accountFinder.searchChurchAccountByNumber(destinationAccountNumber);
+                    if (foundChurchAccount != null) {
+                        foundChurchAccount.setBalance(foundChurchAccount.getBalance().add(amount));
+                        manager.merge(foundChurchAccount);
+                    }
+                } catch (Exception ex) {
+                    manager.getTransaction().rollback();
+                    throw new SQLException("Erro ao atualizar a conta da igreja", ex);
                 }
+                manager.getTransaction().commit();
             }
         }
     }

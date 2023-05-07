@@ -2,6 +2,7 @@ package br.com.unifacol.dizimo.model.service;
 
 import br.com.unifacol.dizimo.model.entities.Member;
 import br.com.unifacol.dizimo.model.interfaces.service.IMemberService;
+import br.com.unifacol.dizimo.model.repository.AccountFinder;
 import br.com.unifacol.dizimo.model.repository.MemberRepository;
 import br.com.unifacol.dizimo.model.validator.ValidatorCPF;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class MemberService implements IMemberService {
     private ValidatorCPF validatorCPF = new ValidatorCPF();
     private MemberRepository memberRepository;
+    private AccountFinder accountFinder = new AccountFinder();
 
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
@@ -35,21 +37,24 @@ public class MemberService implements IMemberService {
     }
 
     @Override
-    public void update(Member member) throws SQLException {
-        do {
+    public void update(String cpf, Integer password, Member member) throws SQLException {
+       Member memberFound = accountFinder.searchMemberByCpfAndPassword(cpf,password);
+       if (memberFound != null){
+           do {
 
-            if (!validatorCPF.verificarCpf(member.getCpf())) {
-                System.out.println("CPF inválido. Digite novamente.");
-                member.setCpf(JOptionPane.showInputDialog("CPF: "));
-            }
-        } while (!validatorCPF.verificarCpf(member.getCpf()));
+               if (!validatorCPF.verificarCpf(member.getCpf())) {
+                   System.out.println("CPF inválido. Digite novamente.");
+                   member.setCpf(JOptionPane.showInputDialog("CPF: "));
+               }
+           } while (!validatorCPF.verificarCpf(member.getCpf()));
 
-        while (member.getPassword() < 100000 || member.getPassword() > 999999) {
-            System.out.println("A senha deve ter 6 dígitos!");
-            System.out.print("Digite a senha (6 dígitos): ");
-            member.setPassword(Integer.parseInt(JOptionPane.showInputDialog("Senha: ")));
-        }
-        memberRepository.update(member);
+           while (member.getPassword() < 100000 || member.getPassword() > 999999) {
+               System.out.println("A senha deve ter 6 dígitos!");
+               System.out.print("Digite a senha (6 dígitos): ");
+               member.setPassword(Integer.parseInt(JOptionPane.showInputDialog("Senha: ")));
+           }
+           memberRepository.update(member);
+       }
     }
 
     @Override

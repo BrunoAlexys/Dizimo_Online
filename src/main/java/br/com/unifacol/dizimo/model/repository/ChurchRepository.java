@@ -16,7 +16,7 @@ public class ChurchRepository implements IChurchRepository {
     private final AccountFinder accountFinder = new AccountFinder();
 
     public ChurchRepository(EntityManager manager) {
-        this.manager = JPAUtil.getEntityManager();
+        this.manager = manager;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ChurchRepository implements IChurchRepository {
     }
 
     @Override
-    public void update(Church church) throws SQLException {
+    public void update(String cnpj,Integer password, Church church) throws SQLException {
         try {
             Church churchfound = accountFinder.fetchChurchByCnpjAndPassword(church.getCnpj(), church.getPassword());
             if (churchfound != null) {
@@ -49,7 +49,7 @@ public class ChurchRepository implements IChurchRepository {
                 churchfound.setCnpj(church.getCnpj());
                 churchfound.setEmail(church.getEmail());
                 churchfound.setActive(church.getActive());
-                churchfound.setDateOfBirth(church.getDateOfBirth());
+                churchfound.setFoundationDate(church.getFoundationDate());
                 churchfound.setPassword(church.getPassword());
                 churchfound.setAddress(church.getAddress());
                 churchfound.setChurchAccount(church.getChurchAccount());

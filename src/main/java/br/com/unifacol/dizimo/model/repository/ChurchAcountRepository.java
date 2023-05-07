@@ -2,8 +2,6 @@ package br.com.unifacol.dizimo.model.repository;
 
 import br.com.unifacol.dizimo.model.entities.ChurchAccount;
 import br.com.unifacol.dizimo.model.interfaces.repository.IChurchAccountRepository;
-import br.com.unifacol.dizimo.model.util.JPAUtil;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
@@ -17,7 +15,7 @@ public class ChurchAcountRepository implements IChurchAccountRepository {
     private AccountFinder accountFinder;
 
     public ChurchAcountRepository(EntityManager manager) {
-        this.manager = JPAUtil.getEntityManager();
+        this.manager = manager;
     }
 
     @Override

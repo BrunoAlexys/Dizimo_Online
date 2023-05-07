@@ -20,6 +20,10 @@ public class AccountMember extends Account {
         this.member = member;
     }
 
+    public AccountMember(Integer accountNumber, Integer password) {
+        super(accountNumber,password);
+    }
+
     @Override
     public String toString() {
         return super.toString();

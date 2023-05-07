@@ -10,6 +10,7 @@
         <class>br.com.unifacol.dizimo.model.entities.Account</class>
         <class>br.com.unifacol.dizimo.model.entities.AccountMember</class>
         <class>br.com.unifacol.dizimo.model.entities.ChurchAccount</class>
+        <class>br.com.unifacol.dizimo.model.entities.DonationMember</class>
         <properties>
             <property name="javax.persistence.jdbc.driver"
                       value="com.mysql.jdbc.Driver"/>

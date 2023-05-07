@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IMemberService {
     void create(Member member) throws SQLException;
-    void update(Member member) throws SQLException;
+    void update(String cpf, Integer password,Member member) throws SQLException;
     void delete(String cpf, Integer password)throws SQLException;
     void listMembers() throws SQLException;
     void listMembersCpfAndPassword(String cpf,Integer password) throws SQLException;

@@ -10,5 +10,5 @@ public interface IChurchAccountService {
     void update(Integer numberAccountActual,Integer passwordActual, ChurchAccount churchAccount) throws SQLException;
     void delete(Integer accountNumber,Integer password)throws SQLException;
     void listChurchAccounts() throws SQLException;
-    void listChurchAccountCnpjAndPassword(Integer accountNumber, Integer password) throws SQLException;
+    void listChurchAccountNumberAndPassword(Integer accountNumber, Integer password) throws SQLException;
 }

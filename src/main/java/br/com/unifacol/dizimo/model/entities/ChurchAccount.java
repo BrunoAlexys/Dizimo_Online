@@ -3,7 +3,6 @@ package br.com.unifacol.dizimo.model.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -19,6 +18,10 @@ public class ChurchAccount extends Account {
     public ChurchAccount(Integer accountNumber, Integer password, Church church) {
         super(accountNumber, password);
         this.church = church;
+    }
+
+    public ChurchAccount (Integer accountNumber, Integer password){
+        super(accountNumber,password);
     }
 
     @Override

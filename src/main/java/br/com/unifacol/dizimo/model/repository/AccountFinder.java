@@ -126,7 +126,7 @@ public class AccountFinder implements IFetchAccounts {
     public ChurchAccount searchChurchAccountByNumber(Integer accountNumber) throws SQLException {
         try {
             TypedQuery<ChurchAccount> query = manager.createQuery(
-                    "SELECT c FROM AccountMember c WHERE c.accountNumber = :accountNumber",
+                    "SELECT c FROM ChurchAccount c WHERE c.accountNumber = :accountNumber",
                     ChurchAccount.class);
             query.setParameter("accountNumber", accountNumber);
             return query.getSingleResult();

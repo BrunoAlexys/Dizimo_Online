@@ -36,7 +36,7 @@ public class ChurchService implements IChurchService {
     }
 
     @Override
-    public void update(Church church) throws SQLException {
+    public void update(String cnpj,Integer password, Church church) throws SQLException {
         do {
             if (!validatorCNPJ.verificarCnpj(church.getCnpj())) {
                 System.out.println("CPF inválido. Digite novamente.");
@@ -50,7 +50,7 @@ public class ChurchService implements IChurchService {
             church.setPassword(Integer.parseInt(JOptionPane.showInputDialog("Password: ")));
         }
 
-        churchRepository.update(church);
+        churchRepository.update(cnpj,password,church);
     }
 
     @Override
