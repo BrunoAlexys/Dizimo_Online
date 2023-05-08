@@ -1,12 +1,0 @@
-
-r
-java:S1128"PRemove this unused import 'br.com.unifacol.dizimo.model.entities.AccountMember'.(åƒÊ‡øÿÿÿÿ8¼ó£¯ÿ0
-~
-java:S1128
-"\Remove this unused import 'br.com.unifacol.dizimo.model.repository.MemberAccountRepository'.(†Ì Áşÿÿÿÿ8Àó£¯ÿ0
-s
-java:S1128"VRemove this unused import 'br.com.unifacol.dizimo.model.service.MemberAccountService'.(éøÇø8Áó£¯ÿ0
-N
-java:S1128"1Remove this unused import 'java.math.BigDecimal'.(êêŠ8Âó£¯ÿ0
-S
-java:S1068"1Remove this unused "accountFinder" private field.(÷›¢çşÿÿÿÿ8ıÖûáş0

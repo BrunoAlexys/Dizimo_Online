@@ -4,12 +4,12 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
     <persistence-unit name="Online_Tithe" transaction-type="RESOURCE_LOCAL">
-        <class>br.com.unifacol.dizimo.model.entities.Member</class>
-        <class>br.com.unifacol.dizimo.model.entities.Church</class>
-        <class>br.com.unifacol.dizimo.model.entities.Address</class>
-        <class>br.com.unifacol.dizimo.model.entities.Account</class>
-        <class>br.com.unifacol.dizimo.model.entities.AccountMember</class>
-        <class>br.com.unifacol.dizimo.model.entities.ChurchAccount</class>
+        <class>br.com.unifacol.dizimo.model.entities.Membro</class>
+        <class>br.com.unifacol.dizimo.model.entities.Igreja</class>
+        <class>br.com.unifacol.dizimo.model.entities.Endereco</class>
+        <class>br.com.unifacol.dizimo.model.entities.Conta</class>
+        <class>br.com.unifacol.dizimo.model.entities.ContaMembro</class>
+        <class>br.com.unifacol.dizimo.model.entities.ContaIgreja</class>
         <class>br.com.unifacol.dizimo.model.entities.DonationMember</class>
         <properties>
             <property name="javax.persistence.jdbc.driver"
