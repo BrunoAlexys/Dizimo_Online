@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "churchs")
+@Table(name = "igrejas")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +25,7 @@ public class Igreja {
     @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
     private Boolean ativo;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "igreja", cascade = CascadeType.ALL)
     private ContaIgreja contaIgreja;
 
     public Igreja(String nomeDaIgreja, String cnpj, Integer senha, LocalDate dateOfBirth, String email) {

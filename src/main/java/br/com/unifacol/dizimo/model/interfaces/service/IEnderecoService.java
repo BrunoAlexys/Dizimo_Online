@@ -3,7 +3,6 @@ package br.com.unifacol.dizimo.model.interfaces.service;
 import br.com.unifacol.dizimo.model.entities.Endereco;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public interface IEnderecoService {
     void cadastrar(Endereco endereco) throws SQLException;

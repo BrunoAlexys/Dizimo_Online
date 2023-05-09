@@ -1,9 +1,0 @@
-
-b	java:S112#"FDefine and throw a dedicated exception instead of using a generic one.(†¥ê¿8ó Êáþ0
-b	java:S112B"FDefine and throw a dedicated exception instead of using a generic one.(»Ý¥Æ8õ Êáþ0
-b	java:S112Z"FDefine and throw a dedicated exception instead of using a generic one.(–¯·Š8õ Êáþ0
-b	java:S112m"FDefine and throw a dedicated exception instead of using a generic one.(›ÞœÓ8õ Êáþ0
-g	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(ßÿ˜žüÿÿÿÿ8ö Êáþ0
-Z	java:S106g"9Replace this use of System.out or System.err by a logger.(¼±Ñ‹ýÿÿÿÿ8­¢Êáþ0
-h
-java:S1128"FRemove this unused import 'br.com.unifacol.dizimo.model.util.JPAUtil'.(£ã²âþÿÿÿÿ8¾¢Êáþ0
