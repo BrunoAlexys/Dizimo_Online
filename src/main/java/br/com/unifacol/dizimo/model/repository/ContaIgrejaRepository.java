@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ContaIgrejaRepository implements IContaIgrejaRepository {
     private final EntityManager manager;
-    private BuscarConta buscarConta;
+    private BuscarConta buscarConta = new BuscarConta();
 
     public ContaIgrejaRepository(EntityManager manager) {
         this.manager = manager;
@@ -45,8 +45,6 @@ public class ContaIgrejaRepository implements IContaIgrejaRepository {
                 manager.getTransaction().begin();
                 contaIgrejaEncontrada = manager.merge(contaIgrejaEncontrada);
                 contaIgrejaEncontrada.setNumeroDaConta(contaIgreja.getNumeroDaConta());
-                contaIgrejaEncontrada.setDataDeAberturaDaConta(contaIgreja.getDataDeAberturaDaConta());
-                contaIgrejaEncontrada.setSaldo(contaIgreja.getSaldo());
                 contaIgrejaEncontrada.setSenha(contaIgreja.getSenha());
                 manager.flush();
                 if (manager.getTransaction().isActive()) {
@@ -71,6 +69,7 @@ public class ContaIgrejaRepository implements IContaIgrejaRepository {
             if (contaIgrejaEncontrada.getSaldo().compareTo(BigDecimal.ZERO) < 0) {
                 throw new IllegalArgumentException("Não é possivel excluir uma conta com saldo!");
             } else {
+                manager.getTransaction().begin();
                 contaIgrejaEncontrada = manager.merge(contaIgrejaEncontrada);
                 this.manager.remove(contaIgrejaEncontrada);
                 if (manager.getTransaction().isActive()) {

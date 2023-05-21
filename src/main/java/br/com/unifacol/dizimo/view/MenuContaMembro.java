@@ -4,15 +4,19 @@ import br.com.unifacol.dizimo.model.entities.ContaMembro;
 import br.com.unifacol.dizimo.model.entities.Membro;
 import br.com.unifacol.dizimo.model.repository.BuscarConta;
 import br.com.unifacol.dizimo.model.repository.ContaMembroRepository;
+import br.com.unifacol.dizimo.model.service.CalculadoraDeDoacoes;
 import br.com.unifacol.dizimo.model.service.ContaMembroService;
+import br.com.unifacol.dizimo.model.util.JPAUtil;
 
+import javax.persistence.EntityManager;
 import javax.swing.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
 public class MenuContaMembro {
+    private EntityManager manager = JPAUtil.getEntityManager();
     private BuscarConta buscarConta = new BuscarConta();
-    private ContaMembroRepository contaMembroRepository = new ContaMembroRepository();
+    private ContaMembroRepository contaMembroRepository = new ContaMembroRepository(manager);
     private ContaMembroService contaMembroService = new ContaMembroService(contaMembroRepository);
 
     public void cadastrarConta() throws SQLException {
@@ -56,19 +60,18 @@ public class MenuContaMembro {
 
     public void depositar() throws SQLException {
         Integer numeroDaConta = Integer.parseInt(JOptionPane.showInputDialog("Numero da conta: "));
-        Integer senhaDaConta = Integer.parseInt(JOptionPane.showInputDialog("Password: "));
+        Integer senhaDaConta = Integer.parseInt(JOptionPane.showInputDialog("Senha: "));
         Double valor = Double.valueOf(JOptionPane.showInputDialog("Digite o valor do deposito: "));
         BigDecimal valorDoDeposito = BigDecimal.valueOf(valor);
-        contaMembroService.depositar(numeroDaConta, senhaDaConta, valorDoDeposito);
+        contaMembroService.depositar(numeroDaConta,senhaDaConta,valorDoDeposito);
     }
 
     public void sacar() throws SQLException {
         Integer numeroDaConta = Integer.parseInt(JOptionPane.showInputDialog("Numero da conta: "));
-        Integer senha = Integer.parseInt(JOptionPane.showInputDialog("Password: "));
+        Integer senha = Integer.parseInt(JOptionPane.showInputDialog("Senha: "));
         Double valor = Double.valueOf(JOptionPane.showInputDialog("Digite o valor do saque: "));
         BigDecimal valorDoSaque = BigDecimal.valueOf(valor);
-        contaMembroService.sacar(numeroDaConta, senha, valorDoSaque);
-
+        contaMembroService.sacar(numeroDaConta,senha,valorDoSaque);
     }
 
     public void transferir() throws SQLException {
@@ -78,5 +81,18 @@ public class MenuContaMembro {
         Double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor da transferencia: "));
         BigDecimal valorDaTransferencia = BigDecimal.valueOf(valor);
         contaMembroService.transferir(numeroDaContaOrigem, numeroDaContaDestino, senha, valorDaTransferencia);
+    }
+
+    public void calcularDizimo() {
+        Double salario = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor do seu salario"));
+        BigDecimal resultado = CalculadoraDeDoacoes.calcularDizimo(BigDecimal.valueOf(salario));
+        JOptionPane.showMessageDialog(null,resultado);
+    }
+
+    public void calcularOferta() {
+        Double salario = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor do seu salario"));
+        Double porc = Double.valueOf(JOptionPane.showInputDialog("Digite quantos % de oferta você deseja doar: "));
+        BigDecimal resultado = CalculadoraDeDoacoes.calcularOferta(BigDecimal.valueOf(salario),BigDecimal.valueOf(porc));
+        JOptionPane.showMessageDialog(null,resultado);
     }
 }

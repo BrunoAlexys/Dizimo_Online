@@ -32,13 +32,13 @@ public class Endereco {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Address {\n");
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  street: '").append(rua).append("'\n");
-        sb.append("  number: ").append(numero).append("\n");
-        sb.append("  district: '").append(bairro).append("'\n");
-        sb.append("  city: '").append(cidade).append("'\n");
-        sb.append("  state: ").append(estado).append("\n");
+        sb.append("Endereço {\n");
+        sb.append("  ID: ").append(id).append("\n");
+        sb.append("  Rua: '").append(rua).append("'\n");
+        sb.append("  Numero: ").append(numero).append("\n");
+        sb.append("  Bairro: '").append(bairro).append("'\n");
+        sb.append("  Cidade: '").append(cidade).append("'\n");
+        sb.append("  Estado: ").append(estado).append("\n");
         sb.append("}");
         return sb.toString();
     }

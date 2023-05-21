@@ -1,9 +1,9 @@
 package br.com.unifacol.dizimo.model.repository;
 
+import br.com.unifacol.dizimo.model.entities.ContaIgreja;
 import br.com.unifacol.dizimo.model.entities.ContaMembro;
 import br.com.unifacol.dizimo.model.interfaces.repository.IContaMembroRepository;
 import br.com.unifacol.dizimo.model.util.JPAUtil;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
@@ -14,10 +14,10 @@ import java.util.List;
 
 public class ContaMembroRepository implements IContaMembroRepository {
     private final EntityManager manager;
-    private BuscarConta buscarConta;
+    private BuscarConta buscarConta = new BuscarConta();
 
-    public ContaMembroRepository() {
-        this.manager = JPAUtil.getEntityManager();
+    public ContaMembroRepository(EntityManager manager) {
+        this.manager = manager;
     }
 
     @Override
@@ -47,8 +47,6 @@ public class ContaMembroRepository implements IContaMembroRepository {
                 manager.getTransaction().begin();
                 contaMembroEncontrada = manager.merge(contaMembroEncontrada);
                 contaMembroEncontrada.setNumeroDaConta(contaMembro.getNumeroDaConta());
-                contaMembroEncontrada.setDataDeAberturaDaConta(contaMembro.getDataDeAberturaDaConta());
-                contaMembroEncontrada.setSaldo(contaMembro.getSaldo());
                 contaMembroEncontrada.setSenha(contaMembro.getSenha());
                 manager.flush();
                 if (manager.getTransaction().isActive()) {
@@ -61,7 +59,7 @@ public class ContaMembroRepository implements IContaMembroRepository {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao alterar o membro", e);
+            throw new RuntimeException("Erro ao alterar a conta membro", e);
         } finally {
             manager.close();
         }
@@ -69,12 +67,16 @@ public class ContaMembroRepository implements IContaMembroRepository {
 
     @Override
     public void excluir(Integer numeroDaConta, Integer senha) throws SQLException {
+
         ContaMembro contaMembroEncontrada = buscarConta.pesquisarContaMembro(numeroDaConta, senha);
         if (contaMembroEncontrada.getSaldo().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Não é possivel excluir uma conta com saldo!");
         } else {
+            manager.getTransaction().begin();
             contaMembroEncontrada = manager.merge(contaMembroEncontrada);
-            this.manager.remove(contaMembroEncontrada);
+            System.out.println(contaMembroEncontrada);
+            manager.remove(contaMembroEncontrada);
+            manager.flush();
             if (manager.getTransaction().isActive()) {
                 if (manager.getTransaction().getRollbackOnly()) {
                     manager.getTransaction().rollback();
@@ -116,7 +118,8 @@ public class ContaMembroRepository implements IContaMembroRepository {
         } catch (IllegalArgumentException e) {
             System.out.println("Conta não foi listada. Erro: " + e.getMessage());
         }
-        return Collections.emptyList();
+        return null;
     }
+
 }
 

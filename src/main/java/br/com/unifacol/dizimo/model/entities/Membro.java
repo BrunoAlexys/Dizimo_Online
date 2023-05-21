@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -26,9 +27,9 @@ public class Membro {
     private String email;
     private Integer senha;
     private Boolean ativo;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Endereco endereco;
-    @OneToOne(mappedBy = "membro", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "membro")
     private ContaMembro contaMembro;
 
     public Membro(String nome, String cpf, Integer idade, LocalDate dataDeNascimento, Genero sexo, Integer senha, String email) {
@@ -42,21 +43,23 @@ public class Membro {
         this.ativo = true;
     }
 
+    public BigDecimal valorDaDoacao(){
+        return this.getContaMembro().getSaldo();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Member {\n");
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  cpf: '").append(cpf).append("'\n");
-        sb.append("  name: '").append(nome).append("'\n");
-        sb.append("  age: ").append(idade).append("\n");
-        sb.append("  dateOfBirth: ").append(dataDeNascimento).append("\n");
-        sb.append("  sex: ").append(sexo).append("\n");
+        sb.append("  ID: ").append(id).append("\n");
+        sb.append("  CPF: '").append(cpf).append("'\n");
+        sb.append("  nome: '").append(nome).append("'\n");
+        sb.append("  Idade: ").append(idade).append("\n");
+        sb.append("  data de nascimento: ").append(dataDeNascimento).append("\n");
+        sb.append("  Sexo: ").append(sexo).append("\n");
         sb.append("  email: '").append(email).append("'\n");
-        sb.append("  password: ").append(senha).append("\n");
-        sb.append("  active: ").append(ativo).append("\n");
-        sb.append("  address: ").append(endereco).append("\n");
-        sb.append("  memberAccount: ").append(contaMembro.toString()).append("\n");
+        sb.append("  Senha: ").append(senha).append("\n");
+        sb.append("  Endereço: ").append(endereco).append("\n");
         sb.append("}");
         return sb.toString();
     }

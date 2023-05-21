@@ -20,10 +20,10 @@ import java.time.format.DateTimeFormatter;
 
 public class MenuMembro {
     private EntityManager manager = JPAUtil.getEntityManager();
-    private MembroRepository memberRepository = new MembroRepository(manager);
-    private MembroService membroService = new MembroService(memberRepository);
-    private EnderecoRepository addressRepository = new EnderecoRepository(manager);
-    private EnderecoService enderecoService = new EnderecoService(addressRepository);
+    private MembroRepository membroRepository = new MembroRepository(manager);
+    private MembroService membroService = new MembroService(membroRepository);
+    private EnderecoRepository enderecoRepository = new EnderecoRepository(manager);
+    private EnderecoService enderecoService = new EnderecoService(enderecoRepository);
     private BuscarConta buscarConta = new BuscarConta();
 
     public void cadastrarMembro() throws SQLException {

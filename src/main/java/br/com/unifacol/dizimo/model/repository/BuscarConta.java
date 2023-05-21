@@ -20,9 +20,9 @@ public class BuscarConta implements IBuscarConta {
     public Membro pesquisarMembroPorCpfESenha(String cpf, Integer senha) throws SQLException{
         try {
             TypedQuery<Membro> query = manager
-                    .createQuery("SELECT m FROM Membro m WHERE m.cpf = :cpf AND m.senha = :password", Membro.class);
+                    .createQuery("SELECT m FROM Membro m WHERE m.cpf = :cpf AND m.senha = :senha", Membro.class);
             query.setParameter("cpf", cpf);
-            query.setParameter("password", senha);
+            query.setParameter("senha", senha);
             return query.getSingleResult();
         } catch (NoResultException e) {
             throw new NoResultException("Não foi encontrada nenhuma conta com CPF " + cpf);
@@ -33,9 +33,9 @@ public class BuscarConta implements IBuscarConta {
     public Membro pesquisarMembroPorEmailESenha(String email, Integer senha) throws SQLException {
         try {
             TypedQuery<Membro> query = manager
-                    .createQuery("SELECT m FROM Membro m WHERE m.email = :email AND m.senha = :password", Membro.class);
+                    .createQuery("SELECT m FROM Membro m WHERE m.email = :email AND m.senha = :senha", Membro.class);
             query.setParameter("email", email);
-            query.setParameter("password", senha);
+            query.setParameter("senha", senha);
             return query.getSingleResult();
         } catch (NoResultException e) {
             throw new NoResultException("Não foi encontrada nenhuma conta com o email: " + email);
@@ -46,9 +46,9 @@ public class BuscarConta implements IBuscarConta {
     public Igreja pesquisarPorCNPJESenha(String cnpj, Integer senha) throws SQLException {
         try {
             TypedQuery<Igreja> query = manager
-                    .createQuery("SELECT c FROM Igreja c WHERE c.cnpj = :cnpj AND c.senha = :password", Igreja.class);
+                    .createQuery("SELECT c FROM Igreja c WHERE c.cnpj = :cnpj AND c.senha = :senha", Igreja.class);
             query.setParameter("cnpj", cnpj);
-            query.setParameter("password", senha);
+            query.setParameter("senha", senha);
             return query.getSingleResult();
         } catch (NoResultException e) {
             throw new NoResultException("Não foi encontrada nenhuma igreja com CNPJ: " + cnpj);
@@ -59,9 +59,9 @@ public class BuscarConta implements IBuscarConta {
     public Igreja pesquisarPorEmailESenha(String email, Integer senha) throws SQLException {
         try {
             TypedQuery<Igreja> query = manager
-                    .createQuery("SELECT c FROM Igreja c WHERE c.email = :email AND c.senha = :password", Igreja.class);
+                    .createQuery("SELECT c FROM Igreja c WHERE c.email = :email AND c.senha = :senha", Igreja.class);
             query.setParameter("email", email);
-            query.setParameter("password", senha);
+            query.setParameter("senha", senha);
             return query.getSingleResult();
         } catch (NoResultException e) {
             throw new NoResultException("Não foi encontrada nenhuma conta com o email: " + email);
@@ -86,6 +86,7 @@ public class BuscarConta implements IBuscarConta {
     public ContaMembro pesquisarContaMembro(Integer numeroDaConta, Integer senha) throws SQLException {
 
         try {
+            System.out.println(numeroDaConta + "D" + senha);
             TypedQuery<ContaMembro> query = manager.createQuery(
                     "SELECT ma FROM ContaMembro ma WHERE ma.numeroDaConta = :accountNumber AND ma.senha = :password",
                     ContaMembro.class);

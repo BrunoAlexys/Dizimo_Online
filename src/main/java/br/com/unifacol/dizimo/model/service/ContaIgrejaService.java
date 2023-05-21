@@ -7,6 +7,7 @@ import br.com.unifacol.dizimo.model.interfaces.service.IContaIgrejaService;
 import br.com.unifacol.dizimo.model.repository.BuscarConta;
 import br.com.unifacol.dizimo.model.repository.ContaIgrejaRepository;
 import br.com.unifacol.dizimo.model.util.JPAUtil;
+
 import javax.persistence.EntityManager;
 import javax.swing.*;
 import java.math.BigDecimal;
@@ -65,7 +66,7 @@ public class ContaIgrejaService implements IContaIgrejaService, IMovimentacaoBan
     public void depositar(Integer numeroDaConta, Integer senha, BigDecimal valor) throws SQLException {
         try {
             ContaIgreja contaIgrejaEncontrada = buscarConta.pesquisarContaIgreja(numeroDaConta, senha);
-            if (contaIgrejaEncontrada != null){
+            if (contaIgrejaEncontrada != null) {
                 manager.getTransaction().begin();
                 BigDecimal currentBalance = contaIgrejaEncontrada.getSaldo();
                 BigDecimal newBalance = currentBalance.add(valor);
@@ -82,62 +83,78 @@ public class ContaIgrejaService implements IContaIgrejaService, IMovimentacaoBan
                     }
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Não  foi possivel realizar o deposito!");
         }
     }
 
     @Override
     public void sacar(Integer numeroDaConta, Integer senha, BigDecimal valor) throws SQLException {
-        ContaIgreja contaIgrejaEncontrada = buscarConta.pesquisarContaIgreja(numeroDaConta, senha);
-        if (contaIgrejaEncontrada != null){
-            BigDecimal currentBalance = contaIgrejaEncontrada.getSaldo();
-            if (valor.compareTo(BigDecimal.ZERO) < 0){
-                throw new IllegalArgumentException("O valor do saque deve ser maior que zero");
-            } else if (currentBalance.compareTo(valor) >= 0) {
-                manager.getTransaction().begin();
-                BigDecimal newBalance = currentBalance.subtract(valor);
-                contaIgrejaEncontrada.setSaldo(newBalance);
-                manager.merge(contaIgrejaEncontrada);
-                manager.flush();
-                if (manager.getTransaction().isActive()) {
-                    if (manager.getTransaction().getRollbackOnly()) {
-                        manager.getTransaction().rollback();
-                        System.out.println("Não foi possivel realizar o saque!");
-                    } else {
-                        manager.getTransaction().commit();
-                        System.out.println("Saque realizado com sucesso!");
+        try {
+            ContaIgreja contaIgrejaEncontrada = buscarConta.pesquisarContaIgreja(numeroDaConta, senha);
+            if (contaIgrejaEncontrada != null) {
+                BigDecimal currentBalance = contaIgrejaEncontrada.getSaldo();
+                if (valor.compareTo(BigDecimal.ZERO) < 0) {
+                    throw new IllegalArgumentException("O valor do saque deve ser maior que zero");
+                } else if (currentBalance.compareTo(valor) >= 0) {
+                    manager.getTransaction().begin();
+                    BigDecimal newBalance = currentBalance.subtract(valor);
+                    contaIgrejaEncontrada.setSaldo(newBalance);
+                    manager.merge(contaIgrejaEncontrada);
+                    manager.flush();
+                    if (manager.getTransaction().isActive()) {
+                        if (manager.getTransaction().getRollbackOnly()) {
+                            manager.getTransaction().rollback();
+                            System.out.println("Não foi possivel realizar o saque!");
+                        } else {
+                            manager.getTransaction().commit();
+                            System.out.println("Saque realizado com sucesso!");
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao sacar" + e);
         }
     }
 
     @Override
     public void transferir(Integer numeroDaContaOrigem, Integer numeroDaContaDestino, Integer senha, BigDecimal valor) throws SQLException {
-        ContaIgreja contaIgrejaEncontrada = buscarConta.pesquisarContaIgreja(numeroDaContaOrigem, senha);
-        if (contaIgrejaEncontrada != null){
-            manager.getTransaction().begin();
-            BigDecimal currentBalance = contaIgrejaEncontrada.getSaldo();
-            if (valor.compareTo(BigDecimal.ZERO) <= 0){
-                throw new IllegalArgumentException("O valor da transferencia não pode ser 0");
-            } else if (currentBalance.compareTo(valor) >= 0) {
-                BigDecimal newBalance = currentBalance.subtract(valor);
-                contaIgrejaEncontrada.setSaldo(newBalance);
-                manager.merge(contaIgrejaEncontrada);
-                try {
-                    ContaMembro contaMembroEncontrada = buscarConta.pesquisarContaMembroPorNumero(numeroDaContaDestino);
-                    if (contaMembroEncontrada != null){
-                        contaMembroEncontrada.setSaldo(contaMembroEncontrada.getSaldo().add(valor));
-                        manager.merge(contaMembroEncontrada);
+        try {
+            ContaIgreja contaIgrejaEncontrada = buscarConta.pesquisarContaIgreja(numeroDaContaOrigem, senha);
+            if (contaIgrejaEncontrada != null) {
+                BigDecimal currentBalance = contaIgrejaEncontrada.getSaldo();
+                if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+                    throw new IllegalArgumentException("O valor da transferencia não pode ser 0");
+                } else if (currentBalance.compareTo(valor) >= 0) {
+                    manager.getTransaction().begin();
+                    BigDecimal newBalance = currentBalance.subtract(valor);
+                    contaIgrejaEncontrada.setSaldo(newBalance);
+                    manager.merge(contaIgrejaEncontrada);
+                    manager.flush();
+                    try {
+                        ContaMembro contaMembroEncontrada = buscarConta.pesquisarContaMembroPorNumero(numeroDaContaDestino);
+                        if (contaMembroEncontrada != null) {
+                            contaMembroEncontrada.setSaldo(contaMembroEncontrada.getSaldo().add(valor));
+                            manager.merge(contaMembroEncontrada);
+                            manager.flush();
+                            if (manager.getTransaction().isActive()) {
+                                if (manager.getTransaction().getRollbackOnly()) {
+                                    manager.getTransaction().rollback();
+                                    System.out.println("Não foi possivel efetuar a transferencia");
+                                } else {
+                                    manager.getTransaction().commit();
+                                    System.out.println("Transferencia realizada com sucesso");
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                        throw new RuntimeException("Erro ao transferir" + ex);
                     }
-                } catch (Exception ex) {
-                    manager.getTransaction().rollback();
-                    throw new SQLException("Erro ao atualizar a conta do membro", ex);
                 }
-                manager.getTransaction().commit();
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
-
 }

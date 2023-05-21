@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +35,12 @@ public abstract class Conta {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Conta {\n");
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  accountNumber: ").append(numeroDaConta).append("\n");
-        sb.append("  password: ").append(senha).append("\n");
-        sb.append("  balance: ").append(saldo).append("\n");
-        sb.append("  accountOpeningDate: ").append(dataDeAberturaDaConta).append("\n");
+        sb.append("\n");
+        sb.append("  ID: ").append(id).append("\n");
+        sb.append("  Número da conta: ").append(numeroDaConta).append("\n");
+        sb.append("  Senha: ").append(senha).append("\n");
+        sb.append("  Saldo: ").append(saldo).append("\n");
+        sb.append("  Data de abertura da conta: ").append(dataDeAberturaDaConta).append("\n");
         sb.append("}");
         return sb.toString();
     }

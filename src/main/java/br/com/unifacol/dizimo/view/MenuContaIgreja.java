@@ -6,7 +6,6 @@ import br.com.unifacol.dizimo.model.repository.BuscarConta;
 import br.com.unifacol.dizimo.model.repository.ContaIgrejaRepository;
 import br.com.unifacol.dizimo.model.service.ContaIgrejaService;
 import br.com.unifacol.dizimo.model.util.JPAUtil;
-
 import javax.persistence.EntityManager;
 import javax.swing.*;
 import java.math.BigDecimal;
@@ -58,7 +57,7 @@ public class MenuContaIgreja {
 
     public void depositar() throws SQLException {
         Integer numeroDaConta = Integer.parseInt(JOptionPane.showInputDialog("Numero da conta: "));
-        Integer senhaDaConta = Integer.parseInt(JOptionPane.showInputDialog("Password: "));
+        Integer senhaDaConta = Integer.parseInt(JOptionPane.showInputDialog("Senha: "));
         Double valor = Double.valueOf(JOptionPane.showInputDialog("Digite o valor do deposito: "));
         BigDecimal valorDoDeposito = BigDecimal.valueOf(valor);
         contaIgrejaService.depositar(numeroDaConta, senhaDaConta, valorDoDeposito);
@@ -66,7 +65,7 @@ public class MenuContaIgreja {
 
     public void sacar() throws SQLException {
         Integer numeroDaConta = Integer.parseInt(JOptionPane.showInputDialog("Numero da conta: "));
-        Integer senha = Integer.parseInt(JOptionPane.showInputDialog("Password: "));
+        Integer senha = Integer.parseInt(JOptionPane.showInputDialog("Senha: "));
         Double valor = Double.valueOf(JOptionPane.showInputDialog("Digite o valor do saque: "));
         BigDecimal valorDoSaque = BigDecimal.valueOf(valor);
         contaIgrejaService.sacar(numeroDaConta, senha, valorDoSaque);

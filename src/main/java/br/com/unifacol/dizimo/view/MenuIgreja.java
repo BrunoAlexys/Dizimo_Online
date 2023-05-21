@@ -46,7 +46,7 @@ public class MenuIgreja {
         igrejaService.cadastrar(igreja);
     }
 
-    public void updateChurch() throws SQLException{
+    public void alterarIgreja() throws SQLException{
         String cnpjAtual =  JOptionPane.showInputDialog("Digite o CNPJ: ");
         Integer senhaAtual = Integer.parseInt(JOptionPane.showInputDialog("Digite a senha atual: "));
 
@@ -76,14 +76,14 @@ public class MenuIgreja {
 
     }
 
-    public void deleteChurch () throws SQLException{
+    public void excluirIgreja () throws SQLException{
         String cnpjAtual =  JOptionPane.showInputDialog("Digite o CNPJ: ");
         Integer senhaAtual = Integer.parseInt(JOptionPane.showInputDialog("Digite a senha atual: "));
 
         igrejaService.excluir(cnpjAtual,senhaAtual);
     }
 
-    public void listChurch () throws SQLException {
+    public void listarIgreja () throws SQLException {
         String cnpjAtual =  JOptionPane.showInputDialog("Digite o CNPJ: ");
         Integer senhaAtual = Integer.parseInt(JOptionPane.showInputDialog("Digite a senha atual: "));
 

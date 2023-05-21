@@ -4,14 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 public class ContaMembro extends Conta {
+
     @OneToOne
     private Membro membro;
 
@@ -26,6 +26,6 @@ public class ContaMembro extends Conta {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "\nTitular: " + this.getMembro().getNome() + super.toString();
     }
 }
